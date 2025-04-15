@@ -1,0 +1,226 @@
+Organizations:
+
+  - &OrdererOrg
+    Name: OrdererOrg
+    ID: OrdererOrg
+    MSPDir: ../organizations/ordererOrganizations/orderer.example.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('OrdererOrg.admin', 'OrdererOrg.peer', 'OrdererOrg.client', 'OrdererOrg.member')"
+      Writers:
+        Type: Signature
+        Rule: "OR('OrdererOrg.admin', 'OrdererOrg.client', 'OrdererOrg.member')"
+      Admins:
+        Type: Signature
+        Rule: "OR('OrdererOrg.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('OrdererOrg.peer', 'OrdererOrg.member')"
+    OrdererEndpoints:
+      - 127.0.0.1:11500
+    AnchorPeers:
+      - Host: 127.0.0.1
+        Port: 11500
+
+  - &TalentOrg
+    Name: TalentOrg
+    ID: TalentOrg
+    MSPDir: ../organizations/peerOrganizations/talentorg/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('TalentOrg.admin', 'TalentOrg.peer', 'TalentOrg.client', 'TalentOrg.member')"
+      Writers:
+        Type: Signature
+        Rule: "OR('TalentOrg.admin', 'TalentOrg.client', 'TalentOrg.member')"
+      Admins:
+        Type: Signature
+        Rule: "OR('TalentOrg.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('TalentOrg.peer', 'TalentOrg.member')"
+    OrdererEndpoints:
+      - 127.0.0.1:11500
+    AnchorPeers:
+      - Host: 127.0.0.1
+        Port: 45540
+
+  - &UniversityOrg
+    Name: UniversityOrg
+    ID: UniversityOrg
+    MSPDir: ../organizations/peerOrganizations/universityorg/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('UniversityOrg.admin', 'UniversityOrg.peer', 'UniversityOrg.client', 'UniversityOrg.member')"
+      Writers:
+        Type: Signature
+        Rule: "OR('UniversityOrg.admin', 'UniversityOrg.client', 'UniversityOrg.member')"
+      Admins:
+        Type: Signature
+        Rule: "OR('UniversityOrg.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('UniversityOrg.peer', 'UniversityOrg.member')"
+    OrdererEndpoints:
+      - 127.0.0.1:11500
+    AnchorPeers:
+      - Host: 127.0.0.1
+        Port: 20510
+
+  - &CompanyOrg
+    Name: CompanyOrg
+    ID: CompanyOrg
+    MSPDir: ../organizations/peerOrganizations/companyorg/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('CompanyOrg.admin', 'CompanyOrg.peer', 'CompanyOrg.client', 'CompanyOrg.member')"
+      Writers:
+        Type: Signature
+        Rule: "OR('CompanyOrg.admin', 'CompanyOrg.client', 'CompanyOrg.member')"
+      Admins:
+        Type: Signature
+        Rule: "OR('CompanyOrg.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('CompanyOrg.peer', 'CompanyOrg.member')"
+    OrdererEndpoints:
+      - 127.0.0.1:11500
+    AnchorPeers:
+      - Host: 127.0.0.1
+        Port: 30510
+
+
+Capabilities:
+  Channel: &ChannelCapabilities
+    V2_0: true
+  Orderer: &OrdererCapabilities
+    V2_0: true
+  Application: &ApplicationCapabilities
+    V2_5: true
+
+
+Application: &ApplicationDefaults
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+    LifecycleEndorsement:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Endorsement"
+    Endorsement:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Endorsement"
+  Capabilities:
+    <<: *ApplicationCapabilities
+  Organizations:
+
+
+Orderer: &OrdererDefaults
+  OrdererType: solo
+  Addresses:
+  # - 127.0.0.1:11500
+  BatchTimeout: 2s
+  BatchSize:
+    MaxMessageCount: 500
+    AbsoluteMaxBytes: 10 MB
+    PreferredMaxBytes: 2 MB
+  MaxChannels: 0
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+    BlockValidation:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+  Capabilities:
+    <<: *OrdererCapabilities
+  Organizations:
+
+
+Channel: &ChannelDefaults
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+  Capabilities:
+    <<: *ChannelCapabilities
+
+Profiles:
+  OrdererGenesis:
+    <<: *ChannelDefaults
+    Orderer:
+      <<: *OrdererDefaults
+      Organizations:
+        - *OrdererOrg
+    Policies:
+      Readers:
+        Type: ImplicitMeta
+        Rule: "ANY Readers"
+      Writers:
+        Type: ImplicitMeta
+        Rule: "ANY Writers"
+      Admins:
+        Type: ImplicitMeta
+        Rule: "MAJORITY Admins"
+    Consortiums:
+      TalentConsortium:
+        Organizations:
+          - *TalentOrg
+          - *UniversityOrg
+          - *CompanyOrg
+
+  ApplicationChannel:
+    Consortium: TalentConsortium
+    Policies:
+      Readers:
+        Type: ImplicitMeta
+        Rule: "ANY Readers"
+      Writers:
+        Type: ImplicitMeta
+        Rule: "ANY Writers"
+      Admins:
+        Type: ImplicitMeta
+        Rule: "MAJORITY Admins"
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+        - *TalentOrg
+        - *UniversityOrg
+        - *CompanyOrg
+      Policies:
+        Readers:
+          Type: ImplicitMeta
+          Rule: "ANY Readers"
+        Writers:
+          Type: ImplicitMeta
+          Rule: "ANY Writers"
+        Admins:
+          Type: ImplicitMeta
+          Rule: "MAJORITY Admins"
+        LifecycleEndorsement:
+          Type: ImplicitMeta
+          Rule: "MAJORITY Endorsement"
+        Endorsement:
+          Type: ImplicitMeta
+          Rule: "MAJORITY Endorsement"

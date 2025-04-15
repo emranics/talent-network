@@ -1,0 +1,82 @@
+
+services:
+
+  orderer.example.com:
+    image: hyperledger/fabric-orderer:2.5.12
+    container_name: orderer.example.com
+    environment:
+      - FABRIC_LOGGING_SPEC=INFO
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_LISTENPORT=11500
+      - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/genesis.block
+      - ORDERER_GENERAL_BOOTSTRAPMETHOD=file
+      - ORDERER_GENERAL_BOOTSTRAPFILE=/var/hyperledger/orderer/genesis.block
+      - ORDERER_GENERAL_LOCALMSPID=OrdererOrg
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      - ORDERER_CFG_PATH=/etc/hyperledger/fabric
+    volumes:
+      - ./channel-artifacts/genesis.block:/var/hyperledger/orderer/genesis.block
+      - ./organizations/ordererOrganizations/orderer.example.com/msp:/var/hyperledger/orderer/msp
+      - ./organizations/ordererOrganizations/orderer.example.com/msp/admincerts:/var/hyperledger/orderer/msp/admincerts
+      - ./organizations/ordererOrganizations/orderer.example.com/orderer.yaml:/etc/hyperledger/fabric/orderer.yaml
+    network_mode: host
+
+  peer0.talentorg:
+    image: hyperledger/fabric-peer:2.5.12
+    container_name: peer0.talentorg
+    environment:
+      - CORE_PEER_ID=peer0.talentorg
+      - CORE_PEER_ADDRESS=127.0.0.1:45540
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:45540
+      - CORE_PEER_LOCALMSPID=TalentOrg
+      - CORE_PEER_MSPCONFIGPATH=/var/hyperledger/peer/msp
+      - FABRIC_CFG_PATH=/etc/hyperledger/fabric
+      - CORE_VM_ENDPOINT=unix:///var/run/docker.sock
+      - CORE_PEER_SYSTEMCHAINCODE_ENABLED=true
+#      - CORE_CHAINCODE_MODE=dev
+    volumes:
+      - ./organizations/peerOrganizations/talentorg/msp:/var/hyperledger/peer/msp
+      - ./organizations/peerOrganizations/talentorg/peers/peer0.talentorg/core.yaml:/etc/hyperledger/fabric/core.yaml
+      - ./organizations/peerOrganizations/talentorg/peers/peer0.talentorg:/var/hyperledger/production
+      - /var/run/docker.sock:/var/run/docker.sock
+    network_mode: host
+
+  peer0.universityorg:
+    image: hyperledger/fabric-peer:2.5.12
+    container_name: peer0.universityorg
+    environment:
+      - CORE_PEER_ID=peer0.universityorg
+      - CORE_PEER_ADDRESS=127.0.0.1:20510
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:20510
+      - CORE_PEER_LOCALMSPID=UniversityOrg
+      - CORE_PEER_MSPCONFIGPATH=/var/hyperledger/peer/msp
+      - FABRIC_CFG_PATH=/etc/hyperledger/fabric
+      - CORE_VM_ENDPOINT=unix:///var/run/docker.sock
+      - CORE_PEER_SYSTEMCHAINCODE_ENABLED=true
+#      - CORE_CHAINCODE_MODE=dev
+    volumes:
+      - ./organizations/peerOrganizations/universityorg/msp:/var/hyperledger/peer/msp
+      - ./organizations/peerOrganizations/universityorg/peers/peer0.universityorg/core.yaml:/etc/hyperledger/fabric/core.yaml
+      - ./organizations/peerOrganizations/universityorg/peers/peer0.universityorg:/var/hyperledger/production
+      - /var/run/docker.sock:/var/run/docker.sock
+    network_mode: host
+
+  peer0.companyorg:
+    image: hyperledger/fabric-peer:2.5.12
+    container_name: peer0.companyorg
+    environment:
+      - CORE_PEER_ID=peer0.companyorg
+      - CORE_PEER_ADDRESS=127.0.0.1:30510
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:30510
+      - CORE_PEER_LOCALMSPID=CompanyOrg
+      - CORE_PEER_MSPCONFIGPATH=/var/hyperledger/peer/msp
+      - FABRIC_CFG_PATH=/etc/hyperledger/fabric
+      - CORE_VM_ENDPOINT=unix:///var/run/docker.sock
+      - CORE_PEER_SYSTEMCHAINCODE_ENABLED=true
+#      - CORE_CHAINCODE_MODE=dev
+    volumes:
+      - ./organizations/peerOrganizations/companyorg/msp:/var/hyperledger/peer/msp
+      - ./organizations/peerOrganizations/companyorg/peers/peer0.companyorg/core.yaml:/etc/hyperledger/fabric/core.yaml
+      - ./organizations/peerOrganizations/companyorg/peers/peer0.companyorg:/var/hyperledger/production
+      - /var/run/docker.sock:/var/run/docker.sock
+    network_mode: host

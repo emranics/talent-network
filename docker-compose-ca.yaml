@@ -1,0 +1,50 @@
+
+services:
+
+  ca_talentorg:
+    image: hyperledger/fabric-ca:1.5.15
+    container_name: ca_talentorg
+    environment:
+      - FABRIC_CA_SERVER_CA_NAME=ca-talentorg
+      - FABRIC_CA_SERVER_TLS_ENABLED=false
+      - FABRIC_CA_SERVER_PORT=40540
+    volumes:
+      - ./organizations/fabric-ca/talentorg:/etc/hyperledger/fabric-ca
+    command: sh -c 'fabric-ca-server start -b admin:adminpw --tls.enabled=false --home /etc/hyperledger/fabric-ca'
+    network_mode: host
+
+  ca_universityorg:
+    image: hyperledger/fabric-ca:1.5.15
+    container_name: ca_universityorg
+    environment:
+      - FABRIC_CA_SERVER_CA_NAME=ca-universityorg
+      - FABRIC_CA_SERVER_TLS_ENABLED=false
+      - FABRIC_CA_SERVER_PORT=42540
+    volumes:
+      - ./organizations/fabric-ca/universityorg:/etc/hyperledger/fabric-ca
+    command: sh -c 'fabric-ca-server start -b admin:adminpw --tls.enabled=false --home /etc/hyperledger/fabric-ca'
+    network_mode: host
+
+  ca_companyorg:
+    image: hyperledger/fabric-ca:1.5.15
+    container_name: ca_companyorg
+    environment:
+      - FABRIC_CA_SERVER_CA_NAME=ca-companyorg
+      - FABRIC_CA_SERVER_TLS_ENABLED=false
+      - FABRIC_CA_SERVER_PORT=41540
+    volumes:
+      - ./organizations/fabric-ca/companyorg:/etc/hyperledger/fabric-ca
+    command: sh -c 'fabric-ca-server start -b admin:adminpw --tls.enabled=false --home /etc/hyperledger/fabric-ca'
+    network_mode: host
+
+  ca_ordererorg:
+    image: hyperledger/fabric-ca:1.5.15
+    container_name: ca_ordererorg
+    environment:
+      - FABRIC_CA_SERVER_CA_NAME=ca-ordererorg
+      - FABRIC_CA_SERVER_TLS_ENABLED=false
+      - FABRIC_CA_SERVER_PORT=10054
+    volumes:
+      - ./organizations/fabric-ca/ordererorg:/etc/hyperledger/fabric-ca
+    command: sh -c 'fabric-ca-server start -b admin:adminpw --tls.enabled=false --home /etc/hyperledger/fabric-ca'
+    network_mode: host

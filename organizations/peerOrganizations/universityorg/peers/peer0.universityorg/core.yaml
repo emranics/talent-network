@@ -1,0 +1,85 @@
+peer:
+  id: peer0.universityorg
+  networkId: fabric_network
+  listenAddress: 0.0.0.0:20510
+  address: 127.0.0.1:20510
+  chaincodeListenAddress: 127.0.0.1:23458
+  addressAutoDetect: false
+
+  mspConfigPath: /var/hyperledger/peer/msp
+
+  localMspId: UniversityOrg
+
+  fileSystemPath: /var/hyperledger/production
+  snapshots:
+    rootDir: /var/hyperledger/production/snapshots
+
+  bccsp:
+    default: SW
+    sw:
+      Hash: SHA2
+      Security: 256
+      FileKeystore:
+        KeyStore: /var/hyperledger/production/keystore
+
+  tls:
+    enabled: false
+    cert:
+      file:
+    key:
+      file:
+    rootcert:
+      file:
+
+  gossip:
+    bootstrap: 127.0.0.1:20510
+    externalEndpoint: 127.0.0.1:20510
+    useLeaderElection: false
+    orgLeader: true
+
+  handlers:
+    authFilters:
+      - name: DefaultAuth
+      - name: ExpirationCheck
+    decorators:
+      - name: DefaultDecorator
+    endorsers:
+      escc:
+        name: DefaultEndorsement
+        library:
+    validators:
+      vscc:
+        name: DefaultValidation
+        library:
+
+vm:
+  endpoint: unix:///var/run/docker.sock
+  docker:
+    tls:
+      enabled: false
+    hostConfig:
+      NetworkMode: host
+
+chaincode:
+  builder: hyperledger/fabric-ccenv:latest
+  pull: false
+  golang:
+    runtime: hyperledger/fabric-chaincode-go:latest
+  java:
+    runtime: hyperledger/fabric-javaenv:latest
+  node:
+    runtime: hyperledger/fabric-nodeenv:latest
+  mode: net
+  system:
+    _lifecycle: enable
+    cscc: enable
+    lscc: enable
+    qscc: enable
+  installTimeout: 300s
+  startuptimeout: 300s
+  executetimeout: 30s
+
+operations:
+  listenAddress: 127.0.0.1:14440
+  tls:
+    enabled: false

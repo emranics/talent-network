@@ -1,0 +1,49 @@
+General:
+  ListenAddress: 127.0.0.1
+  ListenPort: 11500
+  TLS:
+    Enabled: false
+    PrivateKey:
+    Certificate:
+    RootCAs:
+    ClientAuthRequired: false
+    ClientRootCAs:
+
+  Keepalive:
+    ServerMinInterval: 60s
+    ServerInterval: 7200s
+    ServerTimeout: 20s
+
+  MaxRecvMsgSize: 104857600
+  MaxSendMsgSize: 104857600
+
+  BootstrapMethod: file
+  BootstrapFile: /var/hyperledger/orderer/genesis.block
+
+  LocalMSPDir: /var/hyperledger/orderer/msp
+  LocalMSPID: OrdererOrg
+
+  Profile:
+    Enabled: false
+    Address: 0.0.0.0:10600
+
+FileLedger:
+  Location: /var/hyperledger/production/orderer
+  Prefix: hyperledger-fabric-orderer
+
+Consensus:
+  WalDir: /var/hyperledger/production/orderer/wal
+  SnapDir: /var/hyperledger/production/orderer/snapshot
+
+Operations:
+  ListenAddress: 127.0.0.1:24430
+  TLS:
+    Enabled: false
+
+Metrics:
+  Provider: prometheus
+
+Admin:
+  ListenAddress: 127.0.0.1:34430
+  TLS:
+    Enabled: false

@@ -1,0 +1,27 @@
+ca:
+  name: ca-ordererorg
+
+affiliations: {}
+
+registry:
+  identities:
+    - name: admin
+      pass: adminpw
+      type: client
+      affiliation: ""
+      attrs:
+        hf.Registrar.Roles: "*"
+        hf.Registrar.DelegateRoles: "*"
+        hf.Revoker: true
+        hf.IntermediateCA: true
+        hf.GenCRL: true
+        hf.Registrar.Attributes: "*"
+        hf.AffiliationMgr: true
+
+tls:
+  enabled: false
+
+operations:
+  listenaddress: 127.0.0.1:34434
+  tls:
+    enabled: false

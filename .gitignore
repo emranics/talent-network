@@ -1,0 +1,4 @@
+.idea
+talent-chaincode.tar.gz
+talent-chaincode/node_modules
+talent-api/node_modules

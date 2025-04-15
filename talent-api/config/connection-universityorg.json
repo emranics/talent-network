@@ -1,0 +1,28 @@
+{
+    "name": "talent-network",
+    "version": "1.0.0",
+    "client": {
+        "organization": "UniversityOrg",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                }
+            }
+        }
+    },
+    "organizations": {
+        "UniversityOrg": {
+            "mspid": "UniversityOrgMSP",
+            "certificateAuthorities": [
+                "ca.universityorg"
+            ]
+        }
+    },
+    "certificateAuthorities": {
+        "ca.universityorg": {
+            "url": "http://localhost:42540",
+            "caName": "ca-universityorg"
+        }
+    }
+}

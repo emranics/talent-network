@@ -1,0 +1,28 @@
+{
+    "name": "talent-network",
+    "version": "1.0.0",
+    "client": {
+        "organization": "CompanyOrg",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                }
+            }
+        }
+    },
+    "organizations": {
+        "CompanyOrg": {
+            "mspid": "CompanyOrgMSP",
+            "certificateAuthorities": [
+                "ca.companyorg"
+            ]
+        }
+    },
+    "certificateAuthorities": {
+        "ca.companyorg": {
+            "url": "http://localhost:41540",
+            "caName": "ca-companyorg"
+        }
+    }
+}
